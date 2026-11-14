@@ -1,0 +1,65 @@
+name: "Context Preflight"
+description: "Pre-flight CI check for CLAUDE.md, AGENTS.md, SKILL.md, .mcp.json, MCP schemas, and prompt-cache hygiene."
+author: "Silu Panda"
+branding:
+  icon: "shield"
+  color: "purple"
+inputs:
+  path:
+    description: "Repository path to scan"
+    required: false
+    default: "."
+  max-turn0-tokens:
+    description: "Maximum estimated turn-0 context tokens before failing"
+    required: false
+    default: "8000"
+  max-file-tokens:
+    description: "Maximum estimated tokens for a single always-loaded context file"
+    required: false
+    default: "4000"
+  max-skill-lines:
+    description: "Maximum recommended lines in SKILL.md body"
+    required: false
+    default: "500"
+  fail-on:
+    description: "Failure threshold: error, warning, or never"
+    required: false
+    default: "error"
+  ignore-rules:
+    description: "Comma-separated list of rule IDs to ignore"
+    required: false
+    default: ""
+  ignore-paths:
+    description: "Comma-separated list of file or directory patterns to ignore"
+    required: false
+    default: ""
+  sarif-file:
+    description: "Optional output path for SARIF 2.1.0 results"
+    required: false
+    default: ""
+  comment-pr:
+    description: "Post or update a sticky summary comment on pull requests"
+    required: false
+    default: "true"
+  github-token:
+    description: "GitHub token for updating PR comments"
+    required: false
+    default: "${{ github.token }}"
+outputs:
+  score:
+    description: "Context health score (0-100)"
+  grade:
+    description: "Letter grade (A-F)"
+  passed:
+    description: "Whether the scan satisfied fail-on"
+  turn0-tokens:
+    description: "Estimated turn-0 context tokens"
+  error-count:
+    description: "Number of error findings"
+  warning-count:
+    description: "Number of warning findings"
+  sarif-file:
+    description: "Path to generated SARIF file if requested"
+runs:
+  using: "node20"
+  main: "dist/action.js"

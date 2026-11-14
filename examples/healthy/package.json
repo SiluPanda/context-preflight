@@ -1,0 +1,8 @@
+{
+  "name": "context-preflight-healthy-example",
+  "private": true,
+  "scripts": {
+    "test": "node ./src/check.ts",
+    "lint": "echo ok"
+  }
+}
